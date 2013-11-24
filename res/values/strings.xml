@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyVideoPlayer</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+ 	<string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    
+    <string-array name="left_menu_arrays">
+        <item>我的最爱</item>
+        <item>观看历史</item>
+        <item>设置</item>
+        <item>关于</item>                
+    </string-array>
+</resources>
