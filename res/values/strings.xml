@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
  	<string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="contentDescription">contentDescription</string>
     
     <string-array name="left_menu_arrays">
         <item>我的最爱</item>

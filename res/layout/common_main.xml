@@ -4,25 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" 
     android:baselineAligned="false">
-
-	<ListView
-	    android:id="@+id/changel_listView"
-	    android:layout_width="0dp"
-	    android:layout_height="fill_parent"
-	    android:layout_weight="2"
-	    android:cacheColorHint="#00000000"
-	    android:divider="@null"
-	    android:dividerHeight="0dp"
-	    android:fadeScrollbars="true"
+	
+	<ExpandableListView
+	    android:background="@color/white_grey"
+        android:id="@+id/lvExpd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadeScrollbars="true"
 	    android:fastScrollEnabled="false"
 	    android:scrollingCache="false"
-	    android:smoothScrollbar="false" />
-	
-
-	<FrameLayout 
-		android:id="@+id/channel_layout"
-		android:layout_width="wrap_content"
-		android:layout_height="fill_parent"
-		android:layout_weight="5"/>	    
+	    android:smoothScrollbar="false"
+	    android:divider="@drawable/divider"
+	    android:dividerHeight="0.5dp"
+	    android:groupIndicator="@null"/>
 
 </LinearLayout>
