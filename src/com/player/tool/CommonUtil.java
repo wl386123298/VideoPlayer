@@ -7,8 +7,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import com.player.adapter.TypeAdapter;
-
-import android.R;
 import android.content.Context;
 import android.media.AudioManager;
 import android.provider.Settings;
@@ -106,7 +104,7 @@ public class CommonUtil {
             System.out.println("基本类型为："+basicType);   
             // 获取泛型类型的泛型参数   
             Type[] types = parameterizedType.getActualTypeArguments();   
-            for (int i = 0; i < types.length; i++) {   
+            for (int i = 0; i < types.length;i++) {   
                 System.out.println("第"+(i+1)+"个泛型类型是："+types[i].toString());
                 return types[i].toString();
             }   

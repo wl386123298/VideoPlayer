@@ -12,6 +12,13 @@
         <item>我的最爱</item>
         <item>观看历史</item>
         <item>设置</item>
-        <item>关于</item>                
+        <item>增加</item>                
     </string-array>
+    
+    <integer-array name="left_menu_icon">
+        <item>@drawable/love</item>
+        <item>@drawable/play_history</item>
+        <item>@drawable/setting</item>
+        <item>@drawable/add</item>
+    </integer-array>
 </resources>

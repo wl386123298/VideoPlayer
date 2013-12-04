@@ -19,7 +19,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -27,6 +26,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.player.adapter.LeftMenuAdapter;
 import com.player.fragment.MainFragment;
 import com.player.model.TvContentModel;
 import com.player.model.TvTypeModel;
@@ -34,7 +34,7 @@ import com.player.tool.CommonUtil;
 import com.player.tool.DBUtil;
 import com.sherlock.navigationdrawer.compat.SherlockActionBarDrawerToggle;
 
-public class MainActivity extends SherlockFragmentActivity implements DrawerListener{
+public class MainActivity extends SherlockFragmentActivity implements DrawerListener , OnItemClickListener{
 	private String tv_content_str , tv_type_str;
 	private byte[] tv_content_btyes , tv_type_bytes;
 	private TvContentModel tv_model ;
@@ -44,10 +44,12 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	private List<TvTypeModel> tvModelList;
 	private DrawerLayout drawer;
 	private ListView left_listView;
-	private ArrayAdapter<String> adapter;
+	private LeftMenuAdapter adapter;
 	private ActionBar mActionBar;
 	private SherlockActionBarDrawerToggle mDrawerToggle;
-	private String[] menu_data = {"我的最爱","观看历史","关于","设置"};
+	private String[] menu_data ={"我的最爱","观看历史","设置","增加"};
+	private int[] menu_icon  = {R.drawable.love,R.drawable.play_history,R.drawable.setting,R.drawable.add};
+	private int[] pre_icon = {R.drawable.pre_love,R.drawable.pre_play_history,R.drawable.pre_setting,R.drawable.pre_add};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,10 +58,19 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
 		left_listView = (ListView)findViewById(R.id.left_drawer_listView);		
 		mDrawerToggle = new SherlockActionBarDrawerToggle(this,drawer, R.drawable.ic_drawer_light, R.string.drawer_open, R.string.drawer_close);
-		adapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1 ,menu_data);
-		left_listView.setAdapter(adapter);
+		drawer.setDrawerListener(this);
+		drawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		
-		initData();
+		adapter = new LeftMenuAdapter(this);
+		adapter.setData(menu_data);
+		adapter.setIcon(menu_icon);
+		adapter.setPressIcon(pre_icon);
+		left_listView.setAdapter(adapter);
+		left_listView.setOnItemClickListener(this);
+		
+		Fragment fragment = MainFragment.newInstance();
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.add(R.id.main, fragment).commit();
 		
 		db = FinalDb.create(this,DBUtil.DBNAME);
 		tvContentList = db.findAll(TvContentModel.class);
@@ -79,11 +90,6 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 			MyTask task = new MyTask();
 			task.execute(tv_content_str,tv_type_str);
 		}
-		
-		Fragment fragment = new MainFragment();
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.replace(R.id.main, fragment).commit();
-
 	}
 	
 	
@@ -161,32 +167,7 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 			return null;
 		}
 	}
-	
-	/**
-	 * 初始化数据
-	 */
-	protected void initData() {
-		drawer.setDrawerListener(this);
-		drawer.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-		
-		left_listView.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View view, int position,
-					long id) {
-				/*Fragment fragment = new MainFragment();
-				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-				Bundle bundle = new Bundle();
-				bundle.putString("flag", list.get(position).getTv_type());
-				//System.out.println("**********"+list.get(position).getTv_type());
-				fragment.setArguments(bundle);
-				
-				ft.replace(R.id.main, fragment).commit();*/
-			}
-		});
-		
-	}
-	
 	/**
 	 * 初始化ActionBar
 	 */
@@ -215,5 +196,12 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	@Override
 	public void onDrawerStateChanged(int newState) {
 		mDrawerToggle.onDrawerStateChanged(newState);
+	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		adapter.selectItem(position);
+		adapter.notifyDataSetInvalidated();
 	}
 }

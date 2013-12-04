@@ -17,8 +17,8 @@
         android:id="@+id/ListHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:textSize="17sp" />
+        android:paddingLeft="@dimen/left_menu_padding"
+        android:textSize="@dimen/left_menu_text_size" />
    
 
 </LinearLayout>

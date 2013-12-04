@@ -7,7 +7,6 @@ import com.player.model.TvContentModel;
 import com.player.model.TvTypeModel;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,14 +29,7 @@ public class TypeAdapter extends BaseAdapter{
 	
 	@Override
 	public int getCount() {
-//		if (type_list!=null) {
-//			return type_list.size();
-//		}else {
-//			return content_list.size();
-//		}
-		
 		return type_list != null ? type_list.size():content_list.size();
-		
 	}
 
 	@Override
@@ -63,10 +55,6 @@ public class TypeAdapter extends BaseAdapter{
 		}else {
 			model = (TvTypeModel) type_list.get(position);
 			text.setText(model.getTv_type_name());
-/*		if (cur_pos == position) {
-				convertView.setBackgroundColor(context.getResources().getColor(R.color.grey));
-				text.setTextColor(Color.WHITE);
-			}*/
 		}
 
 		return convertView;
