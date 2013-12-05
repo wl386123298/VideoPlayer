@@ -203,6 +203,15 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	public void onDrawerStateChanged(int newState) {
 		mDrawerToggle.onDrawerStateChanged(newState);
 	}
+	
+	/**
+	 * ¹Ø±Õ×ó±ßµÄ²à»¬
+	 */
+	protected void closeLeftMenu() {
+		if (drawer !=null) {
+			drawer.closeDrawer(left_listView);
+		}
+	}
 
 
 	@Override
@@ -211,6 +220,12 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		adapter.notifyDataSetInvalidated();
 		switch (position) {
 		case 0:
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			Fragment main_fraFragment = MainFragment.newInstance();
+			transaction.replace(R.id.main, main_fraFragment);
+			transaction.addToBackStack(null);
+			transaction.commit();
+			closeLeftMenu();
 			break;
 		case 1:
 			break;
@@ -223,12 +238,15 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 			fra.replace(R.id.main, add_fragment);
 			fra.addToBackStack(null);
 			fra.commit();
-			drawer.closeDrawer(left_listView);
+			closeLeftMenu();
 			break;
 		case 4:
 			break;
 		default:
 			break;
 		}
+		
 	}
+	
+	
 }
