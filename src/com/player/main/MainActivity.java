@@ -27,6 +27,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.player.adapter.LeftMenuAdapter;
+import com.player.fragment.AddFragment;
 import com.player.fragment.MainFragment;
 import com.player.model.TvContentModel;
 import com.player.model.TvTypeModel;
@@ -47,9 +48,11 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	private LeftMenuAdapter adapter;
 	private ActionBar mActionBar;
 	private SherlockActionBarDrawerToggle mDrawerToggle;
-	private String[] menu_data ={"我的最爱","观看历史","设置","增加"};
-	private int[] menu_icon  = {R.drawable.love,R.drawable.play_history,R.drawable.setting,R.drawable.add};
-	private int[] pre_icon = {R.drawable.pre_love,R.drawable.pre_play_history,R.drawable.pre_setting,R.drawable.pre_add};
+	private String[] menu_data ={"频道","我的最爱","观看历史","添加","设置"};
+	private int[] menu_icon  = {R.drawable.channel,R.drawable.love,R.drawable.play_history,R.drawable.add,R.drawable.setting};
+	private int[] pre_icon = {R.drawable.pre_channel,R.drawable.pre_love,R.drawable.pre_play_history,R.drawable.pre_add,R.drawable.pre_setting};
+	private Fragment fragment;
+	private FragmentTransaction ft;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,9 +71,11 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		left_listView.setAdapter(adapter);
 		left_listView.setOnItemClickListener(this);
 		
-		Fragment fragment = MainFragment.newInstance();
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.add(R.id.main, fragment).commit();
+		fragment = MainFragment.newInstance();
+		ft = getSupportFragmentManager().beginTransaction();
+		ft.replace(R.id.main, fragment);
+		ft.addToBackStack(null);
+		ft.commit();
 		
 		db = FinalDb.create(this,DBUtil.DBNAME);
 		tvContentList = db.findAll(TvContentModel.class);
@@ -173,6 +178,7 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	 */
 	 protected void initActionBar(){
 		mActionBar = ((SherlockFragmentActivity) this).getSupportActionBar();
+		mActionBar.setIcon(null);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setHomeButtonEnabled(true);
 	}
@@ -203,5 +209,26 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		adapter.selectItem(position);
 		adapter.notifyDataSetInvalidated();
+		switch (position) {
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			FragmentTransaction fra = getSupportFragmentManager().beginTransaction();
+			Fragment add_fragment = new AddFragment();
+			fra.replace(R.id.main, add_fragment);
+			fra.addToBackStack(null);
+			fra.commit();
+			drawer.closeDrawer(left_listView);
+			break;
+		case 4:
+			break;
+		default:
+			break;
+		}
 	}
 }

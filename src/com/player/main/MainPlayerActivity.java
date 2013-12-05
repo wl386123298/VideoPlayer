@@ -2,20 +2,28 @@ package com.player.main;
 
 import java.io.IOException;
 
+import net.tsz.afinal.FinalDb;
+
+import com.player.model.TvContentModel;
 import com.player.tool.CommonUtil;
+import com.player.tool.DBUtil;
+
+import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnCompletionListener;
+import io.vov.vitamio.MediaPlayer.OnErrorListener;
 import io.vov.vitamio.MediaPlayer.OnInfoListener;
 import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +33,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainPlayerActivity extends Activity implements OnCompletionListener,OnInfoListener, OnBufferingUpdateListener,OnTouchListener {
+public class MainPlayerActivity extends FragmentActivity implements 
+		OnCompletionListener,OnInfoListener, OnBufferingUpdateListener,OnTouchListener,OnErrorListener,ISimpleDialogListener{
 
 	/**
 	 * TODO: Set the path variable to a streaming video URL or a local media file
@@ -43,6 +52,7 @@ public class MainPlayerActivity extends Activity implements OnCompletionListener
 	private MediaController mMediaController;
 	private float startX ;
 	private float startY ;
+	private FinalDb db;
 	
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -80,6 +90,7 @@ public class MainPlayerActivity extends Activity implements OnCompletionListener
 			mVideoView.setOnBufferingUpdateListener(this);
 			mVideoView.setOnCompletionListener(this);
 			mVideoView.setOnTouchListener(this);
+			mVideoView.setOnErrorListener(this);
 			mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 				@Override
 				public void onPrepared(MediaPlayer mediaPlayer) {
@@ -192,5 +203,31 @@ public class MainPlayerActivity extends Activity implements OnCompletionListener
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean onError(MediaPlayer mp, int what, int extra) {
+		SimpleDialogFragment.createBuilder(this,getSupportFragmentManager())
+		.setMessage("亲，视频无法播放!")
+		.setPositiveButtonText("确定")
+		.show();
+
+		return true;
+	}
+
+	@Override
+	public void onPositiveButtonClicked(int requestCode) {
+		TvContentModel model = new TvContentModel();
+		model.setEnPlay("false");
+		//System.out.println("path::"+path);
+		db = FinalDb.create(this, DBUtil.DBNAME);
+		db.update(model, "tv_url = '"+ path +"'");
+		finish();
+	}
+
+	@Override
+	public void onNegativeButtonClicked(int requestCode) {
+		// TODO Auto-generated method stub
+		
 	}
 }

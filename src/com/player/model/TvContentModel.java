@@ -6,7 +6,7 @@ import net.tsz.afinal.annotation.sqlite.Table;
 public class TvContentModel {
 	
 	private int id;
-	private String tv_name,tv_url,tv_type;
+	private String tv_name,tv_url,tv_type,enPlay;
 	
 	public int getId() {
 		return id;
@@ -40,4 +40,11 @@ public class TvContentModel {
 		this.tv_type = tv_type;
 	}
 	
+	public String getEnPlay() {
+		return enPlay;
+	}
+	
+	public void setEnPlay(String enPlay) {
+		this.enPlay = enPlay;
+	}
 }

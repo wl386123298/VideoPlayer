@@ -7,18 +7,9 @@
  	<string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="contentDescription">contentDescription</string>
-    
-    <string-array name="left_menu_arrays">
-        <item>我的最爱</item>
-        <item>观看历史</item>
-        <item>设置</item>
-        <item>增加</item>                
-    </string-array>
-    
-    <integer-array name="left_menu_icon">
-        <item>@drawable/love</item>
-        <item>@drawable/play_history</item>
-        <item>@drawable/setting</item>
-        <item>@drawable/add</item>
-    </integer-array>
+    <string name="tvName">电视台名称</string>
+    <string name="tvUrl">直播源</string>
+    <string name="tvType">隶属省份(市)</string>
+    <string name="btn_clear">重置</string>
+    <string name="btn_save">提交</string>
 </resources>

@@ -25,7 +25,7 @@
             android:label="@string/app_name" 
             android:configChanges="orientation|keyboardHidden|navigation"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoTitleBar"
+            android:theme="@style/CustomDarkTheme"
             android:windowSoftInputMode="stateAlwaysHidden"/>
          <activity 
              android:name="com.player.main.MainActivity">
@@ -38,7 +38,7 @@
        <activity
            android:name="com.player.main.MainPlayerActivity"
            android:configChanges="orientation|keyboardHidden"
-           android:theme="@android:style/Theme.NoTitleBar"/>
+           android:theme="@style/CustomDarkTheme"/>
             
     </application>
 
