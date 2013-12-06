@@ -52,7 +52,6 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	private int[] menu_icon  = {R.drawable.channel,R.drawable.love,R.drawable.play_history,R.drawable.add,R.drawable.setting};
 	private int[] pre_icon = {R.drawable.pre_channel,R.drawable.pre_love,R.drawable.pre_play_history,R.drawable.pre_add,R.drawable.pre_setting};
 	private Fragment fragment;
-	private FragmentTransaction ft;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,13 +70,11 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		left_listView.setAdapter(adapter);
 		left_listView.setOnItemClickListener(this);
 		
-		fragment = MainFragment.newInstance();
-		ft = getSupportFragmentManager().beginTransaction();
-		ft.replace(R.id.main, fragment);
-		ft.addToBackStack(null);
-		ft.commit();
+		fragment = MainFragment.newInstance();		
+		replaceFragment(R.id.main, fragment, false);
 		
 		db = FinalDb.create(this,DBUtil.DBNAME);
+		
 		tvContentList = db.findAll(TvContentModel.class);
 		tvModelList = db.findAll(TvTypeModel.class);
 		tv_content_btyes = new CommonUtil(getApplicationContext()).readJson(R.raw.tv_content);
@@ -139,7 +136,6 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		protected String doInBackground(String... params) {
 			String tvContentStr = params[0];
 			String tvTypeStr = params[1];
-			
 			JSONObject obj,obj1;
 			try {
 				obj = new JSONObject(tvContentStr);
@@ -220,11 +216,8 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		adapter.notifyDataSetInvalidated();
 		switch (position) {
 		case 0:
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			Fragment main_fraFragment = MainFragment.newInstance();
-			transaction.replace(R.id.main, main_fraFragment);
-			transaction.addToBackStack(null);
-			transaction.commit();
+			replaceFragment(R.id.main, main_fraFragment, false);
 			closeLeftMenu();
 			break;
 		case 1:
@@ -233,11 +226,8 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 			
 			break;
 		case 3:
-			FragmentTransaction fra = getSupportFragmentManager().beginTransaction();
 			Fragment add_fragment = new AddFragment();
-			fra.replace(R.id.main, add_fragment);
-			fra.addToBackStack(null);
-			fra.commit();
+			replaceFragment(R.id.main, add_fragment, false);
 			closeLeftMenu();
 			break;
 		case 4:
@@ -245,7 +235,21 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		default:
 			break;
 		}
-		
+	}
+	
+	/**
+	 * 往布局文件中添加fragment
+	 * @param layout_id 布局文件的ID
+	 * @param fragment 要添加的fragment
+	 * @param isAddToBackStack 是否添加到isAddToBackStack
+	 */
+	protected void replaceFragment(int layout_id, Fragment fragment,boolean isAddToBackStack){
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		transaction.replace(layout_id, fragment);
+		if (isAddToBackStack) {
+			transaction.addToBackStack(null);
+		}
+		transaction.commit();
 	}
 	
 	

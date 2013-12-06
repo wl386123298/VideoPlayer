@@ -4,12 +4,10 @@ import java.io.IOException;
 
 import net.tsz.afinal.FinalDb;
 
+import com.jrummy.apps.dialogs.EasyDialog;
 import com.player.model.TvContentModel;
 import com.player.tool.CommonUtil;
 import com.player.tool.DBUtil;
-
-import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
-import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.MediaPlayer;
@@ -21,6 +19,7 @@ import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 import android.net.Uri;
 import android.os.Bundle;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.app.FragmentActivity;
@@ -34,7 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainPlayerActivity extends FragmentActivity implements 
-		OnCompletionListener,OnInfoListener, OnBufferingUpdateListener,OnTouchListener,OnErrorListener,ISimpleDialogListener{
+		OnCompletionListener,OnInfoListener, OnBufferingUpdateListener,OnTouchListener,OnErrorListener{
 
 	/**
 	 * TODO: Set the path variable to a streaming video URL or a local media file
@@ -207,27 +206,26 @@ public class MainPlayerActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
-		SimpleDialogFragment.createBuilder(this,getSupportFragmentManager())
+		new EasyDialog.Builder(this,EasyDialog.THEME_HOLO_LIGHT)
 		.setMessage("亲，视频无法播放!")
-		.setPositiveButtonText("确定")
+		.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				TvContentModel model = new TvContentModel();
+				model.setEnPlay("false");
+				//System.out.println("path::"+path);
+				db = FinalDb.create(getApplicationContext(), DBUtil.DBNAME);
+				db.update(model, "tv_url = '"+ path +"'");
+				finish();
+				
+			}
+		})
 		.show();
+		
 
 		return true;
 	}
 
-	@Override
-	public void onPositiveButtonClicked(int requestCode) {
-		TvContentModel model = new TvContentModel();
-		model.setEnPlay("false");
-		//System.out.println("path::"+path);
-		db = FinalDb.create(this, DBUtil.DBNAME);
-		db.update(model, "tv_url = '"+ path +"'");
-		finish();
-	}
-
-	@Override
-	public void onNegativeButtonClicked(int requestCode) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
