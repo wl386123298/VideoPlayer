@@ -1,8 +1,8 @@
 package com.player.model;
 
-import net.tsz.afinal.annotation.sqlite.Table;
+import com.lidroid.xutils.db.annotation.Table;
 
-@Table(name="tvContent")
+@Table(name= "tvContent")
 public class TvContentModel {
 	
 	private int id;

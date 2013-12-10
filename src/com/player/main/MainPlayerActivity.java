@@ -5,6 +5,9 @@ import java.io.IOException;
 import net.tsz.afinal.FinalDb;
 
 import com.jrummy.apps.dialogs.EasyDialog;
+import com.lidroid.xutils.DbUtils;
+import com.lidroid.xutils.db.sqlite.WhereBuilder;
+import com.lidroid.xutils.exception.DbException;
 import com.player.model.TvContentModel;
 import com.player.tool.CommonUtil;
 import com.player.tool.DBUtil;
@@ -40,8 +43,6 @@ public class MainPlayerActivity extends FragmentActivity implements
 	 * path.
 	 */
 	private String path = "http://live.gslb.letv.com/gslb?stream_id=cctv5_800&tag=live&ext=m3u8&sign=live_tv";
-	//private String path = "http://f.youku.com/player/getFlvPath/sid/00_00/st/flv/fileid/0300020503528470BB522307FE5B85C2966162-C259-CF18-957F-3858C1FA97BD?K=de0f1115f5b64e2a261d5755";
-	//private String path = "rtmp://lm02.everyontv.net/ptv/phd197";
 	private Uri uri;
 	private VideoView mVideoView;
 	private boolean isStart;
@@ -51,7 +52,8 @@ public class MainPlayerActivity extends FragmentActivity implements
 	private MediaController mMediaController;
 	private float startX ;
 	private float startY ;
-	private FinalDb db;
+	private DbUtils db;
+	private EasyDialog dialog;
 	
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -62,7 +64,6 @@ public class MainPlayerActivity extends FragmentActivity implements
 		mVideoView = (VideoView) findViewById(R.id.buffer);
 		pb = (ProgressBar) findViewById(R.id.probar);
 		replay_btn = (ImageButton)findViewById(R.id.replayBtn);
-		//replay_btn.setVisibility(View.GONE);
 		
 		downloadRateView = (TextView) findViewById(R.id.download_rate);
 		loadRateView = (TextView) findViewById(R.id.load_rate);
@@ -206,8 +207,11 @@ public class MainPlayerActivity extends FragmentActivity implements
 
 	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
-		new EasyDialog.Builder(this,EasyDialog.THEME_HOLO_LIGHT)
+		dialog = new EasyDialog.Builder(this,EasyDialog.THEME_HOLO_LIGHT)
+		.setTitle("提示")
+		.setIcon(null)
 		.setMessage("亲，视频无法播放!")
+		.setCancelable(false)
 		.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -215,16 +219,31 @@ public class MainPlayerActivity extends FragmentActivity implements
 				TvContentModel model = new TvContentModel();
 				model.setEnPlay("false");
 				//System.out.println("path::"+path);
-				db = FinalDb.create(getApplicationContext(), DBUtil.DBNAME);
-				db.update(model, "tv_url = '"+ path +"'");
-				finish();
+				db = DbUtils.create(getApplicationContext(), DBUtil.DBNAME);
+				db.configDebug(true);
 				
+				// "tv_url = '"+ path +"'"
+				try {
+					db.update(model,WhereBuilder.b("tv_url", "=", path),"enPlay");
+				} catch (DbException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				finish();		
 			}
 		})
 		.show();
-		
 
 		return true;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (dialog !=null) {
+			dialog.dismiss();
+		}
+
 	}
 
 	

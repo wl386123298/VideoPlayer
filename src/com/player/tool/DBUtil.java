@@ -11,7 +11,7 @@ import android.content.Context;
  * @author Administrator
  *
  */
-public class DBUtil {
+public class DBUtil{
 	public final static String DBNAME = "tv_list";//Êý¾Ý¿âÃû³Æ
 	
 	private Context context;

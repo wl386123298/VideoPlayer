@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.tsz.afinal.FinalDb;
-import net.tsz.afinal.db.sqlite.DbModel;
-
 import com.actionbarsherlock.app.SherlockFragment;
 
+import com.lidroid.xutils.DbUtils;
+import com.lidroid.xutils.db.sqlite.Selector;
+import com.lidroid.xutils.db.sqlite.SqlInfo;
+import com.lidroid.xutils.db.table.DbModel;
+import com.lidroid.xutils.exception.DbException;
 import com.player.adapter.MyExpandableListAdapter;
 import com.player.main.MainPlayerActivity;
 import com.player.main.R;
@@ -32,7 +34,7 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
 public class MainFragment extends SherlockFragment implements OnGroupExpandListener , OnGroupCollapseListener,OnChildClickListener,OnGroupClickListener{
 	private static MainFragment fragment = null;
 	private ExpandableListView listView;
-	private FinalDb db;
+	private DbUtils db;
 	private List<TvTypeModel> tvTypeList;
 	private List<TvContentModel> tvContentList;
 	private Map<String, List<TvContentModel>> listDataChild;
@@ -50,8 +52,14 @@ public class MainFragment extends SherlockFragment implements OnGroupExpandListe
 			Bundle savedInstanceState) {
 		View  v = inflater.inflate(R.layout.common_main, null);
 		
-		db = FinalDb.create(getActivity(), DBUtil.DBNAME);
-		tvTypeList = db.findAllByWhere(TvTypeModel.class, null, "tv_type");
+		db = DbUtils.create(getActivity(), DBUtil.DBNAME);
+		
+		try {
+			tvTypeList = db.findAll(Selector.from(TvTypeModel.class).orderBy("tv_type"));
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
+		
 		tvContentList = new ArrayList<TvContentModel>();
 		listDataChild = new HashMap<String, List<TvContentModel>>();
 		
@@ -135,8 +143,11 @@ public class MainFragment extends SherlockFragment implements OnGroupExpandListe
 		protected String doInBackground(String... params) {
 			try {
 				String type = tvTypeList.get(Integer.parseInt(params[0])).getTv_type();
-				List<DbModel> list_model= db.findDbModelListBySQL("select * , count(DISTINCT tv_name) as count from tvContent where tv_type = '"
-						+ type +"' GROUP BY tv_name ORDER BY id ");
+				String sql = "select * , count(DISTINCT tv_name) as count from tvContent where tv_type = '"
+					+ type +"' GROUP BY tv_name ORDER BY id ";
+				
+				SqlInfo sql_info  = new SqlInfo(sql);
+				List<DbModel> list_model= db.findDbModelAll(sql_info);
 				
 				if (!tvContentList.isEmpty()) {
 					tvContentList.clear();

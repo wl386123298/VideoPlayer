@@ -8,25 +8,25 @@ package io.vov.vitamio;
 
 public final class R {
 	public static final class drawable {
-		public static final int ic_launcher = 0x7f0200af;
-		public static final int mediacontroller_bg = 0x7f0200bd;
-		public static final int mediacontroller_pause01 = 0x7f0200be;
-		public static final int mediacontroller_pause02 = 0x7f0200bf;
-		public static final int mediacontroller_pause_button = 0x7f0200c0;
-		public static final int mediacontroller_play01 = 0x7f0200c1;
-		public static final int mediacontroller_play02 = 0x7f0200c2;
-		public static final int mediacontroller_play_button = 0x7f0200c3;
-		public static final int scrubber_control_disabled_holo = 0x7f0200de;
-		public static final int scrubber_control_focused_holo = 0x7f0200df;
-		public static final int scrubber_control_normal_holo = 0x7f0200e0;
-		public static final int scrubber_control_normal_holo_mimi = 0x7f0200e1;
-		public static final int scrubber_control_pressed_holo = 0x7f0200e2;
-		public static final int scrubber_control_selector_holo = 0x7f0200e3;
-		public static final int scrubber_primary_holo = 0x7f0200e4;
-		public static final int scrubber_progress_horizontal_holo_dark = 0x7f0200e5;
-		public static final int scrubber_secondary_holo = 0x7f0200e6;
-		public static final int scrubber_secondary_holo_mimi = 0x7f0200e7;
-		public static final int scrubber_track_holo_dark = 0x7f0200e8;
+		public static final int ic_launcher = 0x7f0200b4;
+		public static final int mediacontroller_bg = 0x7f0200c3;
+		public static final int mediacontroller_pause01 = 0x7f0200c4;
+		public static final int mediacontroller_pause02 = 0x7f0200c5;
+		public static final int mediacontroller_pause_button = 0x7f0200c6;
+		public static final int mediacontroller_play01 = 0x7f0200c7;
+		public static final int mediacontroller_play02 = 0x7f0200c8;
+		public static final int mediacontroller_play_button = 0x7f0200c9;
+		public static final int scrubber_control_disabled_holo = 0x7f0200e4;
+		public static final int scrubber_control_focused_holo = 0x7f0200e5;
+		public static final int scrubber_control_normal_holo = 0x7f0200e6;
+		public static final int scrubber_control_normal_holo_mimi = 0x7f0200e7;
+		public static final int scrubber_control_pressed_holo = 0x7f0200e8;
+		public static final int scrubber_control_selector_holo = 0x7f0200e9;
+		public static final int scrubber_primary_holo = 0x7f0200ea;
+		public static final int scrubber_progress_horizontal_holo_dark = 0x7f0200eb;
+		public static final int scrubber_secondary_holo = 0x7f0200ec;
+		public static final int scrubber_secondary_holo_mimi = 0x7f0200ed;
+		public static final int scrubber_track_holo_dark = 0x7f0200ee;
 	}
 	public static final class id {
 		public static final int mediacontroller_file_name = 0x7f08006d;

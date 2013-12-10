@@ -2,6 +2,9 @@
 <resources>
     <color name="grey">#7F7F7F</color>
     <color name="white_grey">#f7f7f7</color>
+    <color name="white_grey_1">#b9b9b9</color>
+    <color name="turquoise">#1abc9c</color><!--蓝绿色  -->
+    <color name="greensae">#16a085</color>
     
     <!-- custom light theme: -->
 	<color name="dialog_message_text">#333333</color>

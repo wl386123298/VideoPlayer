@@ -122,10 +122,10 @@ public final class R {
 		public static final int abs__bright_foreground_disabled_holo_light = 0x7f050008;
 		public static final int abs__bright_foreground_holo_dark = 0x7f050005;
 		public static final int abs__bright_foreground_holo_light = 0x7f050006;
-		public static final int abs__primary_text_disable_only_holo_dark = 0x7f05001d;
-		public static final int abs__primary_text_disable_only_holo_light = 0x7f05001e;
-		public static final int abs__primary_text_holo_dark = 0x7f05001f;
-		public static final int abs__primary_text_holo_light = 0x7f050020;
+		public static final int abs__primary_text_disable_only_holo_dark = 0x7f050020;
+		public static final int abs__primary_text_disable_only_holo_light = 0x7f050021;
+		public static final int abs__primary_text_holo_dark = 0x7f050022;
+		public static final int abs__primary_text_holo_light = 0x7f050023;
 	}
 	public static final class dimen {
 		public static final int abs__action_bar_default_height = 0x7f0a0001;
@@ -257,9 +257,9 @@ public final class R {
 		public static final int abs__textfield_searchview_right_holo_dark = 0x7f02006d;
 		public static final int abs__textfield_searchview_right_holo_light = 0x7f02006e;
 		public static final int abs__toast_frame = 0x7f02006f;
-		public static final int drawer_shadow = 0x7f0200a7;
-		public static final int ic_drawer_dark = 0x7f0200ad;
-		public static final int ic_drawer_light = 0x7f0200ae;
+		public static final int drawer_shadow = 0x7f0200aa;
+		public static final int ic_drawer_dark = 0x7f0200b2;
+		public static final int ic_drawer_light = 0x7f0200b3;
 	}
 	public static final class id {
 		public static final int abs__action_bar = 0x7f080020;

@@ -3,6 +3,7 @@ package com.player.main;
 import java.util.List;
 
 import net.tsz.afinal.FinalDb;
+import net.tsz.afinal.FinalDb.DaoConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +11,8 @@ import org.json.JSONObject;
 
 import android.R.integer;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +29,9 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.lidroid.xutils.DbUtils;
+import com.lidroid.xutils.db.sqlite.Selector;
+import com.lidroid.xutils.exception.DbException;
 import com.player.adapter.LeftMenuAdapter;
 import com.player.fragment.AddFragment;
 import com.player.fragment.MainFragment;
@@ -40,7 +46,7 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	private byte[] tv_content_btyes , tv_type_bytes;
 	private TvContentModel tv_model ;
 	private TvTypeModel type_model;
-	private FinalDb db;
+	private DbUtils db;
 	private List<TvContentModel> tvContentList;
 	private List<TvTypeModel> tvModelList;
 	private DrawerLayout drawer;
@@ -57,6 +63,7 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity);
 		initActionBar();
+	
 		drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
 		left_listView = (ListView)findViewById(R.id.left_drawer_listView);		
 		mDrawerToggle = new SherlockActionBarDrawerToggle(this,drawer, R.drawable.ic_drawer_light, R.string.drawer_open, R.string.drawer_close);
@@ -73,10 +80,17 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		fragment = MainFragment.newInstance();		
 		replaceFragment(R.id.main, fragment, false);
 		
-		db = FinalDb.create(this,DBUtil.DBNAME);
-		
-		tvContentList = db.findAll(TvContentModel.class);
-		tvModelList = db.findAll(TvTypeModel.class);
+		db = DbUtils.create(this,DBUtil.DBNAME);
+		db.configDebug(true);
+		db.configAllowTransaction(true);
+		try {
+			tvContentList = db.findAll(Selector.from(TvContentModel.class));
+			tvModelList = db.findAll(Selector.from(TvTypeModel.class));
+		} catch (DbException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		tv_content_btyes = new CommonUtil(getApplicationContext()).readJson(R.raw.tv_content);
 		tv_type_bytes = new CommonUtil(getApplicationContext()).readJson(R.raw.tv_type);
 		
@@ -127,6 +141,8 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	 *
 	 */
 	class MyTask extends AsyncTask<String, integer, String>{
+		private SQLiteDatabase transacytion_db;
+
 		@Override
 		protected void onProgressUpdate(integer... values) {
 			super.onProgressUpdate(values);
@@ -137,7 +153,10 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 			String tvContentStr = params[0];
 			String tvTypeStr = params[1];
 			JSONObject obj,obj1;
+			transacytion_db = db.getDatabase();
+			
 			try {
+				transacytion_db.beginTransaction();
 				obj = new JSONObject(tvContentStr);
 				JSONArray array = obj.getJSONArray("RECORDS");
 				for (int i = 0; i < array.length(); i++) {
@@ -146,8 +165,13 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 					tv_model.setTv_name(item.getString("tv_name"));
 					tv_model.setTv_url(item.getString("tv_url"));
 					tv_model.setTv_type(item.getString("tv_type"));
-					db.save(tv_model);
+					try {
+						db.save(tv_model);
+					} catch (DbException e) {
+						e.printStackTrace();
+					}
 				}
+			
 				
 				obj1 = new JSONObject(tvTypeStr);
 				JSONArray array1 = obj1.getJSONArray("RECORDS");
@@ -157,12 +181,19 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 					type_model.setTv_type(item.getString("tv_type"));
 					
 					type_model.setTv_type_name(item.getString("tv_type_name"));
-					db.save(type_model);
+					
+					try {
+						db.save(type_model);
+					} catch (DbException e) {
+						e.printStackTrace();
+					}
+					transacytion_db.setTransactionSuccessful();
 				}
 				
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
+				transacytion_db.endTransaction();
 			}
 
 			return null;
@@ -174,7 +205,6 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	 */
 	 protected void initActionBar(){
 		mActionBar = ((SherlockFragmentActivity) this).getSupportActionBar();
-		mActionBar.setIcon(null);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 		mActionBar.setHomeButtonEnabled(true);
 	}
@@ -223,7 +253,6 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		case 1:
 			break;
 		case 2:
-			
 			break;
 		case 3:
 			Fragment add_fragment = new AddFragment();

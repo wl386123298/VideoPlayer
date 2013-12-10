@@ -12,7 +12,8 @@
         android:hint="@string/tvName"
         android:inputType="text"
         android:singleLine="true"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_round_style"/>
     
     <EditText 
         android:id="@+id/tv_url"
@@ -20,7 +21,8 @@
         android:layout_width="fill_parent"
         android:hint="@string/tvUrl"
         android:inputType="textUri"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_round_style"/>
     
     <AutoCompleteTextView
         android:layout_margin="10dp"
@@ -28,14 +30,17 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:hint="@string/tvType"
-        android:completionThreshold="1"/>
+        android:completionThreshold="1"
+        android:background="@drawable/edit_round_style"/>
      
 		<Button 
             android:id="@+id/save"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:text="@string/btn_save"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_style"/>
         
     
 
