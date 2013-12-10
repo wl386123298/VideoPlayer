@@ -193,6 +193,7 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
+			}finally{
 				transacytion_db.endTransaction();
 			}
 
