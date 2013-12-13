@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/white_grey">
+	    
+	 <LinearLayout 
+	     android:layout_height="40dp"
+	     android:layout_width="fill_parent"
+	     android:background="@android:color/white">
+	     
+	     <TextView 
+	         android:id="@+id/play_history_enable"
+	         android:layout_weight="1"
+	         android:layout_height="fill_parent"
+	         android:layout_width="fill_parent"
+	         android:text="@string/enable_play"
+	         android:textSize="15sp"
+	         android:gravity="center"/>
+	     
+	     <TextView 
+	         android:id="@+id/play_history_disable"
+	         android:layout_weight="1"
+	         android:layout_width="fill_parent"
+	         android:layout_height="fill_parent"
+	         android:text="@string/disable_play"
+	         android:textSize="15sp"
+	         android:gravity="center"/>
+	     
+	 </LinearLayout>
+	 
+	 <ImageView 
+	     android:id="@+id/play_history_underline"
+	     android:layout_height="wrap_content"
+	     android:layout_width="wrap_content"
+	     android:contentDescription="@string/contentDescription"
+	     android:scaleType="matrix"
+	     android:src="@drawable/tab_sliding_icon"/>
+	    
+	 <android.support.v4.view.ViewPager
+	     android:id="@+id/play_history_view_pager"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent" />
+
+</LinearLayout>

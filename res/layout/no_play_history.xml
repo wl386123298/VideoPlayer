@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_grey">
+    
+    <TextView
+		android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:drawableLeft="@drawable/sad"
+		android:layout_centerHorizontal="true"
+		android:layout_centerVertical="true"
+	    android:text="@string/no_play_history_text"
+	    android:textColor="@color/white_grey_1"
+	    android:textSize="20sp"
+	    android:gravity="center_vertical" />
+    	
+ 
+
+</RelativeLayout>
