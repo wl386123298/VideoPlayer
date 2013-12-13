@@ -7,9 +7,19 @@
  	<string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="contentDescription">contentDescription</string>
+    
+    <string name="enable_play">正常播放</string>
+    <string name="disable_play">不能正常播放</string>
+    <string name="no_play_history_text">无播放历史</string>
+    <string name="complete_play">视频已播放完，点击重新播放</string>
     <string name="tvName">电视台名称</string>
     <string name="tvUrl">直播源</string>
     <string name="tvType">隶属省份(市)</string>
     <string name="btn_clear">重置</string>
     <string name="btn_save">保存</string>
+    
+    <string-array name="play_history_item">
+        <item>Y</item>
+    	<item>N</item>
+    </string-array>
 </resources>

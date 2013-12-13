@@ -55,6 +55,7 @@
         android:textColor="@android:color/white"/>
 	
     <ImageButton
+        android:contentDescription="@string/contentDescription"
         android:src="@drawable/replay_btn_style" 
         android:id="@+id/replayBtn"
         android:background="@android:color/transparent"
@@ -72,7 +73,7 @@
         android:layout_below="@id/replayBtn"
         android:layout_marginTop="36dp"
         android:layout_centerHorizontal="true"
-        android:text="视频已播放完，点击重新播放"
+        android:text="@string/complete_play"
         />
   
 </RelativeLayout>

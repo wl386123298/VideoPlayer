@@ -10,6 +10,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.db.sqlite.SqlInfo;
+import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.db.table.DbModel;
 import com.lidroid.xutils.exception.DbException;
 import com.player.adapter.MyExpandableListAdapter;
@@ -50,8 +51,9 @@ public class MainFragment extends SherlockFragment implements OnGroupExpandListe
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View  v = inflater.inflate(R.layout.common_main, null);
+		View  v = inflater.inflate(R.layout.expandable_list_view, null);
 		
+		getSherlockActivity().getSupportActionBar().setTitle("频道");
 		db = DbUtils.create(getActivity(), DBUtil.DBNAME);
 		
 		try {
@@ -97,10 +99,21 @@ public class MainFragment extends SherlockFragment implements OnGroupExpandListe
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v,
 			int groupPosition, int childPosition, long id) {
+		String url = listDataChild.get(tvTypeList.get(groupPosition).getTv_type_name()).get(childPosition).getTv_url();
 		Intent intent = new Intent();
-		intent.putExtra("tv_url", listDataChild.get(tvTypeList.get(groupPosition).getTv_type_name()).get(childPosition).getTv_url());
+		intent.putExtra("tv_url", url);
 		intent.setClass(getActivity(), MainPlayerActivity.class);
 		startActivity(intent);
+		
+		TvContentModel model =new TvContentModel();
+		model.setPlay_history("true");
+		
+		try {
+			db.update(model,WhereBuilder.b("tv_url", "=", url), "play_history");
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
+		
 		return true;
 	}
 
@@ -181,6 +194,7 @@ public class MainFragment extends SherlockFragment implements OnGroupExpandListe
                 // 设置被选中的group置于顶端  
 				listView.setSelectedGroup(tmpGroupPosition);
 				adapter.notifyDataSetChanged();
+				adapter.notifyDataSetInvalidated();
 			}
 		}
 	}

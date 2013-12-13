@@ -2,8 +2,6 @@ package com.player.main;
 
 import java.io.IOException;
 
-import net.tsz.afinal.FinalDb;
-
 import com.jrummy.apps.dialogs.EasyDialog;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.WhereBuilder;
@@ -60,7 +58,7 @@ public class MainPlayerActivity extends FragmentActivity implements
 		super.onCreate(icicle);
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
-		setContentView(R.layout.main_player);
+		setContentView(R.layout.player);
 		mVideoView = (VideoView) findViewById(R.id.buffer);
 		pb = (ProgressBar) findViewById(R.id.probar);
 		replay_btn = (ImageButton)findViewById(R.id.replayBtn);
@@ -226,7 +224,6 @@ public class MainPlayerActivity extends FragmentActivity implements
 				try {
 					db.update(model,WhereBuilder.b("tv_url", "=", path),"enPlay");
 				} catch (DbException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				finish();		

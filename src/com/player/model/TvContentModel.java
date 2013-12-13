@@ -7,6 +7,7 @@ public class TvContentModel {
 	
 	private int id;
 	private String tv_name,tv_url,tv_type,enPlay;
+	private String play_history;//≤•∑≈¿˙ ∑
 	
 	public int getId() {
 		return id;
@@ -47,4 +48,13 @@ public class TvContentModel {
 	public void setEnPlay(String enPlay) {
 		this.enPlay = enPlay;
 	}
+	
+	public String getPlay_history() {
+		return play_history;
+	}
+	
+	public void setPlay_history(String play_history) {
+		this.play_history = play_history;
+	}
+	
 }

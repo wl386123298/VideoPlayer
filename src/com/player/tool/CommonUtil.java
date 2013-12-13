@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import com.player.adapter.TypeAdapter;
+import com.player.adapter.PlayHistoryAdapter;
 import android.content.Context;
 import android.media.AudioManager;
 import android.provider.Settings;
@@ -85,7 +85,7 @@ public class CommonUtil {
 	 * @return 
 	 */
 	public static String getGenericType(String objName){
-		Class<TypeAdapter> class1 = TypeAdapter.class;
+		Class<PlayHistoryAdapter> class1 = PlayHistoryAdapter.class;
 		Field mapField = null;
 		try {
 			mapField = class1.getDeclaredField(objName);

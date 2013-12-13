@@ -57,7 +57,7 @@ public class MyExpandableListAdapter extends android.widget.BaseExpandableListAd
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		
 		if (convertView == null) {
-			convertView = LayoutInflater.from(ctx).inflate(R.layout.list_item, null);
+			convertView = LayoutInflater.from(ctx).inflate(R.layout.common_list_item, null);
 		}
 		
 		child_text = (TextView)convertView.findViewById(R.id.text);
@@ -69,12 +69,12 @@ public class MyExpandableListAdapter extends android.widget.BaseExpandableListAd
 
 	@Override
 	public Object getGroup(int groupPosition) {
-		return listDataHeader.get(groupPosition).getTv_type_name();
+		return listDataHeader.isEmpty()||listDataHeader == null ? null:listDataHeader.get(groupPosition).getTv_type_name();
 	}
 
 	@Override
 	public int getGroupCount() {
-		return listDataHeader.size();
+		return listDataHeader.isEmpty()||listDataHeader == null ? 0:listDataHeader.size();
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class MyExpandableListAdapter extends android.widget.BaseExpandableListAd
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = LayoutInflater.from(ctx).inflate(R.layout.list_group, null);
+			convertView = LayoutInflater.from(ctx).inflate(R.layout.expandable_group_list_item, null);
 		}
 		
 		text = (TextView)convertView.findViewById(R.id.ListHeader);

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+    
+    <TextView 
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/play_history_tv_name"/>
+    
+    <TextView
+        android:layout_below="@id/play_history_tv_name" 
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/white_grey_1"
+        android:singleLine="false"
+        android:id="@+id/play_history_tv_url"
+        android:layout_marginTop="5dp"/>
+
+	<TextView
+	    android:id="@+id/play_history_enPlay"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginRight="10dp"
+	    android:textColor="@android:color/white"
+	    android:textSize="8sp"/>
+
+</RelativeLayout>

@@ -28,6 +28,7 @@
             android:theme="@style/Theme.Sherlock.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden"/>
          <activity 
+           	 android:launchMode="singleTop" 
              android:name="com.player.main.MainActivity">
         	<intent-filter>
                 <action android:name="android.intent.action.MAIN" />

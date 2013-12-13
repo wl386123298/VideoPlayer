@@ -2,17 +2,12 @@ package com.player.main;
 
 import java.util.List;
 
-import net.tsz.afinal.FinalDb;
-import net.tsz.afinal.FinalDb.DaoConfig;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.R.integer;
 import android.content.res.Configuration;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,6 +30,7 @@ import com.lidroid.xutils.exception.DbException;
 import com.player.adapter.LeftMenuAdapter;
 import com.player.fragment.AddFragment;
 import com.player.fragment.MainFragment;
+import com.player.fragment.PlayHistoryFragment;
 import com.player.model.TvContentModel;
 import com.player.model.TvTypeModel;
 import com.player.tool.CommonUtil;
@@ -61,9 +57,9 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_activity);
+		setContentView(R.layout.main);
 		initActionBar();
-	
+		
 		drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
 		left_listView = (ListView)findViewById(R.id.left_drawer_listView);		
 		mDrawerToggle = new SherlockActionBarDrawerToggle(this,drawer, R.drawable.ic_drawer_light, R.string.drawer_open, R.string.drawer_close);
@@ -76,9 +72,6 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		adapter.setPressIcon(pre_icon);
 		left_listView.setAdapter(adapter);
 		left_listView.setOnItemClickListener(this);
-		
-		fragment = MainFragment.newInstance();		
-		replaceFragment(R.id.main, fragment, false);
 		
 		db = DbUtils.create(this,DBUtil.DBNAME);
 		db.configDebug(true);
@@ -105,6 +98,9 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		if (tvContentList == null && tvModelList == null || tvContentList.isEmpty()&&tvModelList.isEmpty()) {
 			MyTask task = new MyTask();
 			task.execute(tv_content_str,tv_type_str);
+		}else {
+			fragment = MainFragment.newInstance();		
+			replaceFragment(R.id.main, fragment, false);
 		}
 	}
 	
@@ -141,8 +137,7 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	 *
 	 */
 	class MyTask extends AsyncTask<String, integer, String>{
-		private SQLiteDatabase transacytion_db;
-
+		
 		@Override
 		protected void onProgressUpdate(integer... values) {
 			super.onProgressUpdate(values);
@@ -153,10 +148,8 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 			String tvContentStr = params[0];
 			String tvTypeStr = params[1];
 			JSONObject obj,obj1;
-			transacytion_db = db.getDatabase();
 			
 			try {
-				transacytion_db.beginTransaction();
 				obj = new JSONObject(tvContentStr);
 				JSONArray array = obj.getJSONArray("RECORDS");
 				for (int i = 0; i < array.length(); i++) {
@@ -169,6 +162,7 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 						db.save(tv_model);
 					} catch (DbException e) {
 						e.printStackTrace();
+						return null;
 					}
 				}
 			
@@ -187,28 +181,38 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 					} catch (DbException e) {
 						e.printStackTrace();
 					}
-					transacytion_db.setTransactionSuccessful();
 				}
-				
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
-			}finally{
-				transacytion_db.endTransaction();
+				return null;
 			}
 
-			return null;
+			return "success";
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			if (result !=null&&"success".equals(result)) {
+				fragment = MainFragment.newInstance();		
+				replaceFragment(R.id.main, fragment, false);
+			}
 		}
 	}
 
 	/**
 	 * 初始化ActionBar
 	 */
-	 protected void initActionBar(){
-		mActionBar = ((SherlockFragmentActivity) this).getSupportActionBar();
-		mActionBar.setDisplayHomeAsUpEnabled(true);
-		mActionBar.setHomeButtonEnabled(true);
-	}
+	 public void initActionBar(){
+		mActionBar = getSupportActionBar();
+		mActionBar.setDisplayHomeAsUpEnabled(true);//给左上角图标的左边加上一个返回的图标 
+		mActionBar.setDisplayUseLogoEnabled(false); 
+		mActionBar.setIcon(getResources().getDrawable(R.drawable.tv));
+		//mActionBar.setDisplayShowHomeEnabled(false);
+		mActionBar.setHomeButtonEnabled(true);//决定左上角的图标是否可以点击。没有向左的小图标
+		
+	 }
 
 	@Override
 	public void onDrawerClosed(View drawerView) {
@@ -254,6 +258,9 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		case 1:
 			break;
 		case 2:
+			Fragment history_fragment = new PlayHistoryFragment();
+			this.replaceFragment(R.id.main, history_fragment, false);
+			this.closeLeftMenu();
 			break;
 		case 3:
 			Fragment add_fragment = new AddFragment();
