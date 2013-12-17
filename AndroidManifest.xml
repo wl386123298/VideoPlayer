@@ -41,6 +41,14 @@
            android:configChanges="orientation|keyboardHidden"
            android:theme="@style/Theme.Sherlock.NoActionBar"/>
             
+      <activity android:name="com.player.main.PlayHistoryActivity"
+      			android:configChanges="orientation|keyboardHidden"
+      			android:theme="@style/StyledIndicators">
+        	<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="com.jakewharton.android.viewpagerindicator.sample.SAMPLE" />
+            </intent-filter>
+      </activity>
     </application>
 
 </manifest>

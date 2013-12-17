@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,6 +60,11 @@ public class MainPlayerActivity extends FragmentActivity implements
 		if (!LibsChecker.checkVitamioLibs(this))
 			return;
 		setContentView(R.layout.player);
+		
+		db = DbUtils.create(getApplicationContext(), DBUtil.DBNAME);
+		db.configDebug(true);
+		
+		
 		mVideoView = (VideoView) findViewById(R.id.buffer);
 		pb = (ProgressBar) findViewById(R.id.probar);
 		replay_btn = (ImageButton)findViewById(R.id.replayBtn);
@@ -202,6 +208,21 @@ public class MainPlayerActivity extends FragmentActivity implements
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		super.onKeyDown(keyCode, event);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			TvContentModel model = new TvContentModel();
+			model.setEnPlay("true");
+			try {
+				db.update(model,WhereBuilder.b("tv_url", "=", path),"enPlay");
+			} catch (DbException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
 
 	@Override
 	public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -217,9 +238,7 @@ public class MainPlayerActivity extends FragmentActivity implements
 				TvContentModel model = new TvContentModel();
 				model.setEnPlay("false");
 				//System.out.println("path::"+path);
-				db = DbUtils.create(getApplicationContext(), DBUtil.DBNAME);
-				db.configDebug(true);
-				
+
 				// "tv_url = '"+ path +"'"
 				try {
 					db.update(model,WhereBuilder.b("tv_url", "=", path),"enPlay");

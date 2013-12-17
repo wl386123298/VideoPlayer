@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.R.integer;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -30,7 +32,6 @@ import com.lidroid.xutils.exception.DbException;
 import com.player.adapter.LeftMenuAdapter;
 import com.player.fragment.AddFragment;
 import com.player.fragment.MainFragment;
-import com.player.fragment.PlayHistoryFragment;
 import com.player.model.TvContentModel;
 import com.player.model.TvTypeModel;
 import com.player.tool.CommonUtil;
@@ -258,9 +259,8 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		case 1:
 			break;
 		case 2:
-			Fragment history_fragment = new PlayHistoryFragment();
-			this.replaceFragment(R.id.main, history_fragment, false);
 			this.closeLeftMenu();
+			startActivity(new Intent(this, PlayHistoryActivity.class));
 			break;
 		case 3:
 			Fragment add_fragment = new AddFragment();
