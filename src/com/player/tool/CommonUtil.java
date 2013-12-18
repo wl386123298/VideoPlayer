@@ -7,10 +7,13 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import com.player.adapter.PlayHistoryAdapter;
+
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
+import android.util.DisplayMetrics;
 
 public class CommonUtil {
 	private Context context;
@@ -111,6 +114,21 @@ public class CommonUtil {
         } 
         
 		return "";
+		
+	}
+	
+	/**
+	 * 获得屏幕的分辨率的宽
+	 * @param activity
+	 * @return 屏幕的宽度，单位像素
+	 */
+	public int getScreenPixels(Activity activity) {
+		DisplayMetrics dm = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+		int width = dm.widthPixels;
+		int height = dm.heightPixels;
+		
+		return width;
 		
 	}
 	

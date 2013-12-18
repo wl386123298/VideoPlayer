@@ -18,6 +18,8 @@
     <string name="btn_clear">重置</string>
     <string name="btn_save">保存</string>
     
+    <string name="btn_edit">编辑</string>
+    <string name="btn_delete">删除</string>
     <string-array name="play_history_item">
         <item>Y</item>
     	<item>N</item>

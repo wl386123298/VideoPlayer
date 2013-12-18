@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.player.fragment.PlayHistoryCommonFragment;
 import com.player.main.R;
 import com.viewpagerindicator.TabPageIndicator;
@@ -24,8 +25,6 @@ public class PlayHistoryActivity extends SherlockFragmentActivity{
 	private TabPageIndicator indicator;
 	private FragmentPagerAdapter adapter;
 	private ActionBar actionBar;
-	private float startX;
-	private float startY;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,13 +48,29 @@ public class PlayHistoryActivity extends SherlockFragmentActivity{
 	}
 	
 	
-	
+	/**
+	 * 初始化ActionBar
+	 */
 	protected void initActionBar() {
 		 actionBar = getSupportActionBar();
 		 actionBar.setDisplayShowHomeEnabled(false);
 		 actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * ViewPager的适配器
+	 * @author wl
+	 *
+	 */
 	class MyAdapter extends FragmentPagerAdapter{
 
 		public MyAdapter(FragmentManager fm) {
@@ -78,40 +93,4 @@ public class PlayHistoryActivity extends SherlockFragmentActivity{
 		}
 		
 	}
-
-	/*@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_SCROLL) {
-			CommonUtil util  = new CommonUtil(getApplicationContext());
-			
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				//记录开始坐标
-				startX = event.getX();
-				startY = event.getY();
-				//Toast.makeText(this, "初始坐标为："+"初始坐标："+startX+"::"+startY, Toast.LENGTH_SHORT).show();
-				
-				break;
-			case MotionEvent.ACTION_UP:
-				
-				if (startX - event.getX() > 100) {
-					//mVideoView.setVolume(leftVolume, rightVolume)
-					System.out.println("左滑！");
-				}else if (event.getX()-startX > 100) {
-					System.out.println("右滑！");
-				}else if (startY - event.getY() >100 ) {
-					
-				}else if (event.getY()- startY > 100 ) {
-					//System.out.println("下滑！");
-				
-				}
-				break;
-				
-			default:
-				break;
-			}
-		}
-		return false;
-	}*/
-
 }

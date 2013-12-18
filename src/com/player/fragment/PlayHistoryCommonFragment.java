@@ -2,28 +2,33 @@ package com.player.fragment;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.MenuItem;
+import com.jrummy.apps.dialogs.EasyDialog;
+import com.jrummy.apps.dialogs.EasyDialog.Builder;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
 import com.lidroid.xutils.db.sqlite.WhereBuilder;
 import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.util.LogUtils;
 import com.player.adapter.PlayHistoryAdapter;
+import com.player.main.MainPlayerActivity;
 import com.player.main.R;
 import com.player.model.TvContentModel;
+import com.player.tool.CommonUtil;
 import com.player.tool.DBUtil;
 
-public class PlayHistoryCommonFragment extends SherlockFragment implements OnScrollListener{
+public class PlayHistoryCommonFragment extends SherlockFragment implements OnScrollListener,OnItemClickListener{
 	private int rec_data;
 	private DbUtils db;
 	private List<TvContentModel> tvContent_list,list,afterRefreshList;
@@ -31,8 +36,9 @@ public class PlayHistoryCommonFragment extends SherlockFragment implements OnScr
 	private PlayHistoryAdapter adapter;
 	private ListView list_view;
 	private int page_index;
-	private static final int PAGESIZE = 6;
+	private int pageSize = 6;
 	private boolean hasMore =true;
+	private Builder dialog;
 	
 	public static PlayHistoryCommonFragment newInstance(int value){
 		PlayHistoryCommonFragment fragment = new PlayHistoryCommonFragment();
@@ -50,8 +56,15 @@ public class PlayHistoryCommonFragment extends SherlockFragment implements OnScr
 		
 		Bundle bundle = getArguments();
 		rec_data = bundle.getInt("data");
+		int screen_width = new CommonUtil(getActivity()).getScreenPixels(getActivity());
 		
-		tvContent_list = getTvContentList(PAGESIZE, page_index);
+		if (screen_width >= 720) {
+			pageSize = 10;
+		}else {
+			pageSize = 6;
+		}
+		
+		tvContent_list = getTvContentList(pageSize, page_index);
 	}
 	
 	/**
@@ -89,18 +102,11 @@ public class PlayHistoryCommonFragment extends SherlockFragment implements OnScr
 			adapter.setData(tvContent_list);
 			list_view.setAdapter(adapter);
 			list_view.setOnScrollListener(this);
+			list_view.setOnItemClickListener(this);
 		}
 		return view;
 	}
 	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			getSherlockActivity().finish();
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
@@ -113,29 +119,40 @@ public class PlayHistoryCommonFragment extends SherlockFragment implements OnScr
 		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
 			// 判断是否滚动到底部
 			if (view.getLastVisiblePosition() == view.getCount() - 1) {
-				LogUtils.d("滑到底部");
+				//LogUtils.d("滑到底部");
 				page_index++;
 				
 				if (hasMore) {
-					new Handler().post(new Runnable() {
-						@Override
-						public void run() {
-							afterRefreshList = getTvContentList(PAGESIZE,
-									page_index);
-							if (afterRefreshList != null
-									|| !afterRefreshList.isEmpty()) {
-								tvContent_list.addAll(afterRefreshList);
-								adapter.notifyDataSetChanged();
-							}else {
-								hasMore = false;
-							}
-						}
-					});
+					afterRefreshList = getTvContentList(pageSize, page_index);
+					if (afterRefreshList == null || afterRefreshList.isEmpty()) {
+						hasMore = false;
+					} else {
+						tvContent_list.addAll(afterRefreshList);
+						adapter.notifyDataSetChanged();
+					}
+				
 				}else {
 					return;
 				}
 				
 			}
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+		String can_play = tvContent_list.get(position).getEnPlay();
+		if ("true".equals(can_play)) {
+			Intent intent = new Intent();
+			intent.setClass(getSherlockActivity(), MainPlayerActivity.class);
+			intent.putExtra("tv_url", tvContent_list.get(position).getTv_url());
+			getSherlockActivity().startActivity(intent);
+		}else {
+			LogUtils.i(tvContent_list.get(position).getEnPlay());
+			dialog = new EasyDialog.Builder(getSherlockActivity(),EasyDialog.THEME_HOLO_LIGHT);
+			View v  = LayoutInflater.from(getSherlockActivity()).inflate(R.layout.edit_and_delete, null);
+			dialog.setView(v);
+			dialog.show();
 		}
 	}
 }

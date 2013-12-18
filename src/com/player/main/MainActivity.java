@@ -81,7 +81,6 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 			tvContentList = db.findAll(Selector.from(TvContentModel.class));
 			tvModelList = db.findAll(Selector.from(TvTypeModel.class));
 		} catch (DbException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
