@@ -55,6 +55,7 @@ public class PlayHistoryActivity extends SherlockFragmentActivity{
 		 actionBar = getSupportActionBar();
 		 actionBar.setDisplayShowHomeEnabled(false);
 		 actionBar.setDisplayHomeAsUpEnabled(true);
+		 actionBar.setTitle("观看历史");
 	}
 	
 	@Override

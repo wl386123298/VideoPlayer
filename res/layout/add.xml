@@ -13,6 +13,7 @@
         android:inputType="text"
         android:singleLine="true"
         android:layout_margin="10dp"
+        android:padding="10dp"
         android:background="@drawable/edit_round_style"/>
     
     <EditText 
@@ -22,6 +23,7 @@
         android:hint="@string/tvUrl"
         android:inputType="textUri"
         android:layout_margin="10dp"
+        android:padding="10dp"
         android:background="@drawable/edit_round_style"/>
     
     <AutoCompleteTextView
@@ -31,6 +33,7 @@
         android:layout_width="fill_parent"
         android:hint="@string/tvType"
         android:completionThreshold="1"
+        android:padding="10dp"
         android:background="@drawable/edit_round_style"/>
      
 		<Button 

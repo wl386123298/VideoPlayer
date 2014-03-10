@@ -1,9 +1,9 @@
 package com.player.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.R.integer;
@@ -24,7 +24,6 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
@@ -44,8 +43,9 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 	private TvContentModel tv_model ;
 	private TvTypeModel type_model;
 	private DbUtils db;
-	private List<TvContentModel> tvContentList;
-	private List<TvTypeModel> tvModelList;
+	private List<TvContentModel> tvContentList,tvContentModelList;
+	private List<TvTypeModel> tvModelList , tvTypeList;
+	
 	private DrawerLayout drawer;
 	private ListView left_listView;
 	private LeftMenuAdapter adapter;
@@ -61,6 +61,8 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		setContentView(R.layout.main);
 		initActionBar();
 		
+		tvContentModelList = new ArrayList<TvContentModel>();
+		tvTypeList = new ArrayList<TvTypeModel>();
 		drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
 		left_listView = (ListView)findViewById(R.id.left_drawer_listView);		
 		mDrawerToggle = new SherlockActionBarDrawerToggle(this,drawer, R.drawable.ic_drawer_light, R.string.drawer_open, R.string.drawer_close);
@@ -78,8 +80,8 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		db.configDebug(true);
 		db.configAllowTransaction(true);
 		try {
-			tvContentList = db.findAll(Selector.from(TvContentModel.class));
-			tvModelList = db.findAll(Selector.from(TvTypeModel.class));
+			tvContentList = db.findAll(Selector.from(TvContentModel.class).limit(100));
+			tvModelList = db.findAll(Selector.from(TvTypeModel.class).limit(100));
 		} catch (DbException e1) {
 			e1.printStackTrace();
 		}
@@ -111,11 +113,12 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		mDrawerToggle.syncState();
 	}
 	
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
-	}
+	}*/
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -158,12 +161,9 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 					tv_model.setTv_name(item.getString("tv_name"));
 					tv_model.setTv_url(item.getString("tv_url"));
 					tv_model.setTv_type(item.getString("tv_type"));
-					try {
-						db.save(tv_model);
-					} catch (DbException e) {
-						e.printStackTrace();
-						return null;
-					}
+					tv_model.setPlay_history("");
+					
+					tvContentModelList.add(tv_model);
 				}
 			
 				
@@ -175,15 +175,13 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 					type_model.setTv_type(item.getString("tv_type"));
 					
 					type_model.setTv_type_name(item.getString("tv_type_name"));
-					
-					try {
-						db.save(type_model);
-					} catch (DbException e) {
-						e.printStackTrace();
-					}
+					tvTypeList.add(type_model);
 				}
 				
-			} catch (JSONException e) {
+				db.saveAll(tvContentModelList, 1000);
+				db.saveAll(tvTypeList);
+				
+			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}
@@ -253,17 +251,19 @@ public class MainActivity extends SherlockFragmentActivity implements DrawerList
 		case 0:
 			Fragment main_fraFragment = MainFragment.newInstance();
 			replaceFragment(R.id.main, main_fraFragment, false);
+			mActionBar.setTitle("ÆµµÀ");
 			closeLeftMenu();
 			break;
 		case 1:
 			break;
 		case 2:
-			this.closeLeftMenu();
 			startActivity(new Intent(this, PlayHistoryActivity.class));
+			this.closeLeftMenu();
 			break;
 		case 3:
 			Fragment add_fragment = new AddFragment();
 			replaceFragment(R.id.main, add_fragment, false);
+			mActionBar.setTitle("Ìí¼Ó");
 			closeLeftMenu();
 			break;
 		case 4:

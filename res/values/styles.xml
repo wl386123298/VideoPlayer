@@ -25,7 +25,7 @@
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:background">@drawable/custom_tab_indicator</item>
         <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
-        <item name="android:textColor">#FF555555</item>
+        <item name="android:textColor">@drawable/selector_tabtext</item>
         <item name="android:textSize">15sp</item>
         <item name="android:divider">@drawable/custom_tab_indicator_divider</item>
         <!-- <item name="android:dividerPadding">10dp</item>

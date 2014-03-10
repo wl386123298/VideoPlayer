@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:state_focused="true" android:drawable="@android:color/black" ></item>
-    <item android:state_focused="false" android:drawable="@color/grey"></item>
-	<item android:drawable="@color/grey"></item>
+	<item android:state_selected="true" android:color="@color/white_green" />
+    <item android:state_pressed="true" android:color="@color/white_green" />
+    <item android:state_focused="true" android:color="@color/white_green" />
+    <item android:color="@color/grey"/>
 </selector>
