@@ -12,6 +12,6 @@ VideoPlayer
 * [Vitamio](https://github.com/yixia/VitamioBundle)
 
 
-##有问题反馈
+##联系我
 * [sina微博](http://weibo.com/1769390951/profile?rightmod=1&wvr=5&mod=personinfo) 
 * [腾讯微博](http://t.qq.com/wl386123298)
